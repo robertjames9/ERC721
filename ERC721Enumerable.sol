@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
+contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
     using Counters for Counters.Counter;
     string public baseExtension = ".json";
     Counters.Counter private _tokenIdCounter;
@@ -16,10 +16,10 @@ contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
     uint256 public maxMintAmount = 5; //per address wallet
     uint256 public maxSupply = 2000; //total supply
 
-    constructor() ERC721("Uber PlasticTestV6", "GGV6") {}
+    constructor() ERC721("Redacted Alpha Pass", "RAP") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmSXPPTLhdMfFENBZ6HgrwYXRaHsMzdEif6C5fco5vKSVj/";
+        return "https://gateway.pinata.cloud/ipfs/QmS6qccpsUT3ZmQKekvHm6AbTS73bHVYRcNmXWC2LEvysG/";
     }
 
     function pause() public onlyOwner {
@@ -36,7 +36,7 @@ contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         require (mintAmount <= maxMintAmount, "Maximum mint for 5");
         require (supply + mintAmount <= maxSupply, "Exceeds max supply");
             
-            if (totalSupply() <= 35) {
+            if (totalSupply() <= 30) {
                 require (msg.value >= price * 0 * mintAmount);
             } else {
                 require (msg.value >= price * mintAmount, "No enough ETH, please check the price");
@@ -47,7 +47,6 @@ contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         for (uint256 i = 1; i <= mintAmount; i++){
             _safeMint(to, supply + i);
         }
-        
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
