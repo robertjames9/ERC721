@@ -35,7 +35,12 @@ contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         require (mintAmount > 0, "Please enter amount");
         require (mintAmount <= maxMintAmount, "Maximum mint for 5");
         require (supply + mintAmount <= maxSupply, "Exceeds max supply");
-        require (msg.value >= price * mintAmount, "No enough ETH, please check the price");
+            
+            if (totalSupply() <= 35) {
+                require (msg.value >= price * 0 * mintAmount);
+            } else {
+                require (msg.value >= price * mintAmount, "No enough ETH, please check the price");
+            }
         
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
@@ -59,12 +64,7 @@ contract UberPlasticTestV6 is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         super._burn(tokenId);
     }
 
-        function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
+    function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory)
     {
         require(
             _exists(tokenId),
