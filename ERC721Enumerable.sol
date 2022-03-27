@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
+contract Superalpha is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
     using Counters for Counters.Counter;
     string public baseExtension = ".json";
     Counters.Counter private _tokenIdCounter;
@@ -21,7 +21,7 @@ contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
     constructor() ERC721("Redacted Alpha Pass", "RAP") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmS6qccpsUT3ZmQKekvHm6AbTS73bHVYRcNmXWC2LEvysG/";
+        return "https://gateway.pinata.cloud/ipfs/QmTXA53QhVqPcSuZ6cN1mciEz4DmB359b12gxmoiU6FaCJ/";
     }
 
     function pause() public onlyOwner {
