@@ -15,6 +15,8 @@ contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
     uint256 public price = 0.06 ether; //mint price
     uint256 public maxMintAmount = 5; //per address wallet
     uint256 public maxSupply = 2000; //total supply
+    uint256[2000] public ids;
+    uint256 private index;
 
     constructor() ERC721("Redacted Alpha Pass", "RAP") {}
 
@@ -36,7 +38,7 @@ contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         require (mintAmount <= maxMintAmount, "Maximum mint for 5");
         require (supply + mintAmount <= maxSupply, "Exceeds max supply");
             
-            if (totalSupply() <= 30) {
+            if (totalSupply() <= 35) {
                 require (msg.value >= price * 0 * mintAmount);
             } else {
                 require (msg.value >= price * mintAmount, "No enough ETH, please check the price");
@@ -45,7 +47,8 @@ contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         for (uint256 i = 1; i <= mintAmount; i++){
-            _safeMint(to, supply + i);
+            uint256 _random = uint256(keccak256(abi.encodePacked(index++, msg.sender, block.timestamp, blockhash(block.number-1))));
+            _safeMint(to, _pickRandomUniqueId(_random));
         }
     }
 
@@ -109,5 +112,14 @@ contract RedactedAlphaPass is ERC721, ERC721Enumerable, ERC721URIStorage, Pausab
             value: address(this).balance
         }("");
         require(success);
+    }
+
+    function _pickRandomUniqueId(uint256 random) private returns (uint256 id) {
+    uint256 len = ids.length - index++;
+    require(len > 0, 'no ids left');
+    uint256 randomIndex = random % len;
+    id = ids[randomIndex] != 0 ? ids[randomIndex] : randomIndex;
+    ids[randomIndex] = uint16(ids[len - 1] == 0 ? len - 1 : ids[len - 1]);
+    ids[len - 1] = 0;
     }
 }
